@@ -1,0 +1,23 @@
+include requirements.txt
+include NOTICE
+include agent_lg/configs/t5gemma_s_joint.yaml
+recursive-include agent_lg/prompts *.md
+recursive-include vendor/alice *.py py.typed LICENSE
+prune tests
+prune build
+prune agent_lg/perspective_study
+prune configs
+prune slurm
+exclude CLEANING_PROGRESS.md
+exclude environment-reproduction-linux*.yaml environment-reproduction-linux*.yml
+exclude requirements-reproduction-linux*.txt
+exclude agent_lg/scripts/analyze_campaign_pool.py agent_lg/scripts/build_bz_pool.py agent_lg/scripts/analyze_agent_metrics.py agent_lg/scripts/suggest_final_batch.py
+global-exclude mock_*.py test_*.py *_test.py conftest.py
+exclude agent_lg/scripts/check_environment.py
+exclude agent_lg/scripts/compare_runs.py
+exclude agent_lg/scripts/gen_design_space.py
+exclude agent_lg/scripts/search_campaign_pool_multi.py
+
+include assets/mallamar-banner.png
+
+include datasets/mallamar_bz_pool_10k.csv

@@ -1,0 +1,72 @@
+# T5Gemma-s example. Supply a campaign CSV containing prompts and both reward columns.
+# CLI: python -m agent_lg.scripts.suggest_next --config agent_lg/configs/t5gemma_s_joint.yaml --data.init_args.data_path=campaign_pool.csv --volume 3000
+data:
+  class_path: alice.data.module.BaseDataModule
+  init_args:
+    data_path: PLACEHOLDER # supply your CSV path here or override it on the CLI
+    input_column: prompt
+    target_column:
+      - reward_oscillation
+      - reward_signal
+    maximize: [true, true]
+    normalize_input: original
+    featurizer:
+      class_path: alice.data.module.Featurizer
+      init_args:
+        representation: get_tokens
+        model_name: google/t5gemma-s-s-prefixlm
+    initializer:
+      class_path: alice.initialization.initializers.BOInitializer
+      init_args:
+        method: sobol
+        n_clusters: 6 # observed rows used to initialize GP training
+        pca_dim: 16
+
+surrogate_model:
+  class_path: alice.surrogate_models.gp_mo_multilayer.MultiDeepGP
+  init_args:
+    finetuning_model:
+      class_path: alice.featurization.deep_multilayer.LLMFeaturizer
+      init_args:
+        model_name: google/t5gemma-s-s-prefixlm
+        input_dim: 512
+        projection_dim: 32
+        num_objectives: 2
+        independent_projection_heads: true
+        use_task_attention: false
+        pooling_method: average
+        normalize_embeddings: false
+        trainable: true
+        lora_dropout: 0.2
+        target_ratio: 0.25
+        from_top: true
+        projection_kwargs:
+          hidden_dims: []
+          activation: gelu
+          dropout: 0.1
+          use_layer_norm: false
+          use_spectral_norm: true
+    kernel_class: gpytorch.kernels.RBFKernel
+    ft_lr: 0.002
+    gp_lr: 0.1
+    wd_llm: 0.01
+    wd_gp: 0.0
+    initial_noise: 0.01
+    noise_constraint: 0.0001
+    initial_lengthscale: 1.0
+    initial_outputscale: 1.0
+    device: cuda # use cpu when running without an NVIDIA GPU
+
+acquisition:
+  class_path: botorch.acquisition.multi_objective.parego.qLogNParEGO
+
+bo:
+  class_path: alice.bo.optimizer.BotorchOptimizer
+  init_args:
+    batch_size: 6 # six primary experiments per batch
+    max_eval_chunk: 128
+
+# Suggest one batch, collect measurements, then rerun with the updated campaign CSV.
+n_iters: 1
+reserve_size: 6   # extra candidates selected as backup if any suggestion yields n_osc=0
+seed: 1

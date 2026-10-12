@@ -1,0 +1,35 @@
+Mallamar
+Copyright (c) 2026 David Segura
+Project license: Apache License, Version 2.0 (see LICENSE).
+
+The project author's OCEAN-derived code is licensed under Apache-2.0 in Mallamar.
+
+This distribution includes code from:
+
+Gollum
+Copyright 2024 Bojana Rankovic
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this code except in compliance with the License.
+You may obtain a copy of the License at
+    https://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+ALICE
+Copyright 2024-2026 Laboratory of Artificial Chemical Intelligence, EPFL, Switzerland
+Apache License, Version 2.0.
+Original notice retained in vendor/alice/LICENSE.
+
+The copied ALICE packaging, installation documentation, and model loading/encoder forwarding, acquisition functions, initialization and embedder freezing have been modified
+for Mallamar's shared environment and historical Gollum campaign compatibility. Its original environment specifications
+were removed from this copy. The standalone ALICE repository is unchanged.
+
+Original upstream copyright and license notices remain applicable.
+
+The vendored copy contains the ALICE runtime package. Standalone benchmark
+configurations and the upstream training runner were removed; Mallamar uses its
+own campaign entry points and joint root packaging. Original source copies were
+preserved during cleanup, and the standalone ALICE checkout was not modified.

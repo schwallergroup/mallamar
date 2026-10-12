@@ -1,0 +1,143 @@
+### Python ###
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+### Virtualenvs / editor settings ###
+.venv/
+venv/
+.env
+.claude/
+.vscode/
+.idea/
+
+### Run artifacts ###
+wandb/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+agent_checkpoints.sqlite
+*.tmp
+
+### Machine-specific output symlinks (point at /scratch — never commit) ###
+/logs
+/results
+/wandb
+/studies
+claude_ideas.md
+CLAUDE.md
+
+### Auto-generated campaign reports ###
+campaign_final_report.md
+campaign_report_seed*.md
+campaign_summary.md
+campaign_summary_seed*.md
+final_analysis_report.md
+final_report.md
+final_report_seed*.md
+final_results_report.md
+report.md
+results.md
+**datasets/*.csv
+
+### Old results directories ###
+results_MOBBOL/
+
+### Per-study output (under studies/<name>/results/) ###
+studies/*/results/
+
+### OS / editor ###
+.DS_Store
+*.swp
+*~
+
+### Unpublished science — never ship for deployment ###
+paper/
+bo_trajectory/
+figures/
+/datasets/*
+!datasets/README.md
+bz_metrics_per_run.csv
+# Agent-written campaign reports: real concentrations + rewards, same category as
+# bo_trajectory/. The Analyzer's write_report names these itself, so match the family
+# rather than one filename (observed: final_campaign_results.md,
+# final_campaign_results_analysis.md, final_campaign_results_analysis_run<jobid>.md).
+final_campaign_results*.md
+analysis/
+
+# write_report resolves a RELATIVE out_path against the repo root, and the agent has
+# passed "scratch/dsegura/..." (no leading slash) intending the real /scratch. That
+# creates a scratch/ tree inside the working copy full of campaign reports.
+scratch/
+
+### Internal notes / strategy (CLAUDE.md + claude_ideas.md already above) ###
+DEPLOYMENT_AGENTIC_PROGRESS.md
+
+### Benchmark harness — dev only, NOT part of the deployment ###
+agent_lg/perspective_study/
+agent_lg/scripts/build_bz_pool.py
+agent_lg/scripts/analyze_agent_metrics.py
+agent_lg/scripts/analyze_campaign_pool.py
+agent_lg/scripts/suggest_final_batch.py
+
+### HPC-specific job scripts ###
+/slurm/
+
+### Scratch / run artifacts ###
+repro_test_*.out
+scratch_repro_test.sh
+
+### Runtime-generated / scratch at repo root ###
+qc_protocol.json
+test_literature_access.py
+### Campaign resume / incident-repair scripts ###
+_check_checkpoint.py
+_clear_pending.py
+_fix_campaign_exp_ids.py
+_fix_noresult.py
+_recompute_rewards.py
+_sync_db_to_pool.py
+
+# Local tests and mock campaign files
+tests/
+test_*.py
+*_test.py
+conftest.py
+mock_*.py
+
+# Keep one public example; other configurations stay local
+/configs/
+/agent_lg/configs/*
+!/agent_lg/configs/t5gemma_s_joint.yaml
+
+# Local cleaning progress
+/CLEANING_PROGRESS.md
+
+# Linux reproduction environment snapshots
+/environment-reproduction-linux*.yaml
+/environment-reproduction-linux*.yml
+/requirements-reproduction-linux*.txt
+
+# Campaign recovery records and writer locks
+**/.mallamar/
+*.mallamar.lock
+
+# Generated distribution artifacts
+/build/
+/dist/
+
+agent_lg/scripts/check_environment.py
+
+agent_lg/scripts/compare_runs.py
+
+agent_lg/scripts/gen_design_space.py
+
+agent_lg/scripts/search_campaign_pool_multi.py
+
+# Public unmeasured BZ campaign template
+!/datasets/mallamar_bz_pool_10k.csv
