@@ -379,6 +379,13 @@ def build_subagent_graph(
         results = []
         for tc in (getattr(last, "tool_calls", None) or []):
             name, args, tid = tc["name"], tc.get("args", {}), tc.get("id", tc["name"]) 
+            if name == "propose_experiments":
+                for message in reversed(state["messages"] + results):
+                    if isinstance(message, ToolMessage) and message.name == "run_bo_iteration":
+                        batch = json.loads(message.content)
+                        args = {**args, "suggestions": batch.get("primaries") or batch.get("suggestions") or [],
+                                "reserves": batch.get("reserves") or []} # use recorded BO candidates
+                        break
             print(f"\n[{label}/Tool] {name}({json.dumps(args)[:200]})")
             if tool_overrides and name in tool_overrides:
                 content = str(tool_overrides[name](args))

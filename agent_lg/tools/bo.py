@@ -5,7 +5,7 @@ from agent_lg.services.bo_process import BOProcessRunner
 from agent_lg.config import AVAILABLE_CONFIGS, CONC_COLS, HERE
 
 from agent_lg.services.storage import read_csv, read_campaign_csv, write_json_atomic, write_csv_atomic, file_revision
-from agent_lg.services.protocols import load_protocol, select_protocol, validate_protocol
+from agent_lg.services.protocols import CONCENTRATION_ALIASES, load_protocol, select_protocol, validate_protocol
 from agent_lg.services.pools import check_campaign_pool
 from agent_lg.services.method import CampaignRecipes, CampaignMethod
 from agent_lg.services.outputs import OutputPaths
@@ -326,7 +326,15 @@ def _tool_propose_experiments(explore_concentrations: list,
             if not reasoning.strip():
                 raise ValueError('[injection] Explain the hypothesis behind the LLM proposals')
             
-        for point in requested:
+        for index, point in enumerate(requested):
+            point = dict(point)
+            for name, aliases in CONCENTRATION_ALIASES.items():
+                column = aliases[-1] # CSV concentration name
+                if column in point:
+                    if name in point and float(point[name]) != float(point[column]):
+                        raise ValueError(f'[injection] {name} aliases disagree')
+                    point[name] = point.pop(column)
+            requested[index] = point
             if method and any(point.get(name) is None for name in ('MA', 'NaBrO3', 'H2SO4')):
                 raise ValueError('[injection] Each LLM point needs MA, NaBrO3 and H2SO4')
             

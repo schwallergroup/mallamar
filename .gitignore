@@ -130,6 +130,7 @@ mock_*.py
 # Generated distribution artifacts
 /build/
 /dist/
+/logs/
 
 agent_lg/scripts/check_environment.py
 
