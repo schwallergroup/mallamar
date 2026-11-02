@@ -1,0 +1,16 @@
+# Joint environment for Windows, macOS, and Linux.
+# Run from the repository root:
+#   conda env create -f environment.yaml
+#   conda activate mallamar
+# Runtime dependencies: requirements.txt. Package metadata: pyproject.toml.
+# NVIDIA users may need a hardware-specific PyTorch wheel.
+# Both campaign modes share this environment and the versions in requirements.txt.
+# This portable specification is not a full historical campaign lock.
+name: mallamar
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - -e .[dev]

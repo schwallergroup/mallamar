@@ -1,0 +1,10 @@
+include environment.yaml requirements.txt NOTICE
+include assets/mallamar-banner.png datasets/mallamar_bz_pool_10k.csv
+include agent_lg/configs/t5gemma_s_joint.yaml
+recursive-include agent_lg/prompts *.md
+recursive-include vendor/alice/src/alice *.py py.typed
+include vendor/alice/LICENSE-ALICE vendor/alice/README.md
+prune tests
+prune slurm
+prune build
+global-exclude test_*.py *_test.py mock_*.py conftest.py
